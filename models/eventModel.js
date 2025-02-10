@@ -39,6 +39,10 @@ const eventSchema = new Schema({
         type: String,
         required: [true, 'Link event tidak boleh kosong!'],
     },
+    source: {
+        type: String,
+        // required: [true, 'Link source tidak boleh kosong!'],
+    },
     poster: {
         type: String,
         required: [true, 'Poster event tidak boleh kosong!'],
@@ -49,7 +53,7 @@ const eventSchema = new Schema({
     },
     description: {
         type: String,
-        required: [true, 'Description event tidak boleh kosong!'],
+        // required: [true, 'Description event tidak boleh kosong!'],
     },
     created_at: {
         type: Date,

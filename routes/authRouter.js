@@ -1,11 +1,11 @@
 import express from "express";
 import { getCurrentUser, loginUser, logoutUser, registerUser } from "../controllers/authController.js";
-import { protectedMiddleware } from "../middleware/authMiddleware.js";
+import { adminMiddleware, protectedMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 // post /api/v1/auth/register
-router.post('/register', registerUser)
+router.post('/register', protectedMiddleware, adminMiddleware, registerUser)
 
 // post /api/v1/auth/login
 router.post('/login', loginUser)

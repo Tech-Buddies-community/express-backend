@@ -45,7 +45,7 @@ export const getEventAll = asyncHandler( async(req, res) => {
 
     let countEvent = await Event.countDocuments(queryOjb)
     if (req.query.page) {
-        if (skipData >= countProduct) {
+        if (skipData >= countEvent) {
             res.status(404)
             throw new Error('This page doest exist')
         }
