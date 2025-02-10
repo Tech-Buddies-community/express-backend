@@ -29,13 +29,13 @@ app.use(express.static('./public'))
 
 import authRouter from './routes/authRouter.js';
 import eventRouter from './routes/eventRouter.js';
-import beasiswaRouter from './routes/beasiswaRouter.js';
+import programRouter from './routes/programRouter.js';
 import jobRouter from './routes/jobRouter.js';
 
 // Parent router
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/event', eventRouter);
-app.use('/api/v1/beasiswa', beasiswaRouter);
+app.use('/api/v1/program', programRouter);
 app.use('/api/v1/job', jobRouter);
 
 app.use(notFound);

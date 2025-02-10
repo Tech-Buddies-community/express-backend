@@ -1,15 +1,15 @@
 import asyncHandler from "../middleware/asyncMiddleware.js";
-import Beasiswa from "../models/beasiswaModel.js";
+import Program from "../models/programModel.js";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 
-export const createBeasiswa = asyncHandler(async(req, res) => {
+export const createProgram = asyncHandler(async(req, res) => {
     try {
-        const createEvent = await Beasiswa.create(req.body);
+        const createProgram = await Program.create(req.body);
 
         res.status(200).json({
-            message: 'Success add event!',
-            data: createEvent
+            message: 'Success add program!',
+            data: createProgram
         });
     } catch (error) {
         res.status(500).json({
@@ -19,7 +19,7 @@ export const createBeasiswa = asyncHandler(async(req, res) => {
     }
 });
 
-export const getAllBeasiswa = asyncHandler(async(req, res) => {
+export const getAllProgram = asyncHandler(async(req, res) => {
     const queryOjb = { ...req.query };
 
     // function for mengabaikan jika ada req page dan limit
@@ -29,11 +29,11 @@ export const getAllBeasiswa = asyncHandler(async(req, res) => {
     let query;
 
     if (req.query.name) {
-        query = Beasiswa.find({
+        query = Program.find({
             name: {$regex: req.query.name, $options: 'i'}
         })
     } else {
-        query = Beasiswa.find(queryOjb)
+        query = Program.find(queryOjb)
     }
 
     // Pagination
@@ -43,41 +43,41 @@ export const getAllBeasiswa = asyncHandler(async(req, res) => {
 
     query = query.skip(skipData).limit(limitData);
 
-    let countBeasiswa = await Beasiswa.countDocuments(queryOjb)
+    let countProgram = await Program.countDocuments(queryOjb)
     if (req.query.page) {
-        if (skipData >= countProduct) {
+        if (skipData >= countProgram) {
             res.status(404)
             throw new Error('This page doest exist')
         }
     }
 
     const data = await query
-    const totalPage = Math.ceil(countBeasiswa / limitData)
+    const totalPage = Math.ceil(countProgram / limitData)
 
     return res.status(200).json({
-        message: 'Success get all event!',
+        message: 'Success get all program!',
         data,
         pagination: {
             totalPage,
             page,
-            totalBeasiswa: countBeasiswa
+            totalProgram: countProgram
         }
     })
 });
 
-export const getDetailBeasiswa = asyncHandler(async(req, res) => {
+export const getDetailProgram = asyncHandler(async(req, res) => {
     try {
         const paramsId = req.params.id
-        const beasiswaDataId = await Beasiswa.findById(paramsId)
+        const programDataId = await Program.findById(paramsId)
 
-        if (!beasiswaDataId) {
+        if (!programDataId) {
             res.status(404)
             throw new Error('Data not found!')
         }
 
         return res.status(200).json({
-            message: 'Success get detail beasiswa!',
-            data: beasiswaDataId
+            message: 'Success get detail program!',
+            data: programDataId
         })
     } catch (error) {
         res.status(500).json({
@@ -87,18 +87,18 @@ export const getDetailBeasiswa = asyncHandler(async(req, res) => {
     }
 });
 
-export const updateBeasiswa = asyncHandler(async(req, res) => {
+export const updateProgram = asyncHandler(async(req, res) => {
     try {
         const paramsId = req.params.id
-        const updateBeasiswaId = await Beasiswa.findByIdAndUpdate(paramsId, 
+        const updateProgramId = await Program.findByIdAndUpdate(paramsId, 
             req.body, {
                 runValidators: false,
                 new: true
             })
 
         return res.status(201).json({
-            message: 'Success update beasiswa!',
-            data: updateBeasiswaId
+            message: 'Success update program!',
+            data: updateProgramId
         })
     } catch (error) {
         res.status(500).json({
@@ -108,13 +108,13 @@ export const updateBeasiswa = asyncHandler(async(req, res) => {
     }
 });
 
-export const deleteBeasiswa = asyncHandler(async(req, res) => {
+export const deleteProgram = asyncHandler(async(req, res) => {
     try {
         const paramsId = req.params.id;
-        await Beasiswa.findByIdAndDelete(paramsId);
+        await Program.findByIdAndDelete(paramsId);
 
         return res.status(200).json({
-            message: 'Success delete beasiswa!',
+            message: 'Success delete program!',
         })
     } catch (error) {
         res.status(500).json({
@@ -126,7 +126,7 @@ export const deleteBeasiswa = asyncHandler(async(req, res) => {
 
 export const fileUpload = asyncHandler( async(req, res) => {
     const stream = cloudinary.uploader.upload_stream({
-        folder: 'techbuddies/beasiswa',
+        folder: 'techbuddies/program',
         allowed_formats: ['jpg', 'jpeg', 'png']
     }, 
     function(err, result){

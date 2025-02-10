@@ -2,46 +2,46 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const beasiswaSchema = new Schema({ 
+const programSchema = new Schema({ 
     name: {
         type: String,
-        required: [true, 'Name beasiswa tidak boleh kosong!'],
+        required: [true, 'Name program tidak boleh kosong!'],
     },
     organizer: {
         type: String,
-        required: [true, 'Organizer beasiswa tidak boleh kosong!'],
+        required: [true, 'Organizer program tidak boleh kosong!'],
     },
     deadline_registration: {
         type: String,
-        required: [true, 'Deadline registration beasiswa tidak boleh kosong!'],
+        required: [true, 'Deadline registration program tidak boleh kosong!'],
     },
     location: {
         type: String,
-        required: [true, 'Location beasiswa tidak boleh kosong!'],
+        // required: [true, 'Location program tidak boleh kosong!'],
     },
     ticket_status: {
         type: String,
-        required: [true, 'Ticket status beasiswa tidak boleh kosong!'],
+        required: [true, 'Ticket status program tidak boleh kosong!'],
     },
     status: {
         type: String,
-        required: [true, 'Status beasiswa tidak boleh kosong!'],
+        required: [true, 'Status program tidak boleh kosong!'],
     },
     information: {
         type: String,
-        required: [true, 'Information beasiswa tidak boleh kosong!'],
+        // required: [true, 'Information program tidak boleh kosong!'],
     },
     registration: {
         type: String,
-        required: [true, 'Registratiin beasiswa tidak boleh kosong!'],
+        // required: [true, 'Registratiin program tidak boleh kosong!'],
     },
     poster: {
         type: String,
-        required: [true, 'Poster beasiswa tidak boleh kosong!'],
+        required: [true, 'Poster program tidak boleh kosong!'],
     },
     description: {
         type: String,
-        required: [true, 'Description beasiswa tidak boleh kosong!'],
+        // required: [true, 'Description program tidak boleh kosong!'],
     },
     created_at: {
         type: Date,
@@ -72,6 +72,6 @@ const beasiswaSchema = new Schema({
     }
 },{ timestamps: true });
 
-const Beasiswa = mongoose.model("Beasiswa", beasiswaSchema);
+const Program = mongoose.model("Program", programSchema);
 
-export default Beasiswa;
+export default Program;

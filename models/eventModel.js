@@ -17,11 +17,11 @@ const eventSchema = new Schema({
     },
     start_time: {
         type: String,
-        required: [true, 'Start time event tidak boleh kosong!'],
+        // required: [true, 'Start time event tidak boleh kosong!'],
     },
     end_time: {
         type: String,
-        required: [true, 'End time event tidak boleh kosong!'],
+        // required: [true, 'End time event tidak boleh kosong!'],
     },
     location: {
         type: String,
