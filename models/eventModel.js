@@ -25,7 +25,7 @@ const eventSchema = new Schema({
     },
     location: {
         type: String,
-        required: [true, 'Location event tidak boleh kosong!'],
+        // required: [true, 'Location event tidak boleh kosong!'],
     },
     ticket_status: {
         type: String,
@@ -37,7 +37,7 @@ const eventSchema = new Schema({
     },
     link: {
         type: String,
-        required: [true, 'Link event tidak boleh kosong!'],
+        // required: [true, 'Link event tidak boleh kosong!'],
     },
     source: {
         type: String,
