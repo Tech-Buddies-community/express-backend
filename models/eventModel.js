@@ -15,6 +15,10 @@ const eventSchema = new Schema({
         type: String,
         required: [true, 'Date event tidak boleh kosong!'],
     },
+    dateend: {
+        type: String,
+        // required: [true, 'Date end event tidak boleh kosong!'],
+    },
     start_time: {
         type: String,
         // required: [true, 'Start time event tidak boleh kosong!'],
