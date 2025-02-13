@@ -36,6 +36,8 @@ export const getAllProgram = asyncHandler(async(req, res) => {
         query = Program.find(queryOjb)
     }
 
+    query = query.sort({ date: 1 });
+
     // Pagination
     const page = req.query.page * 1 || 1
     const limitData = req.query.limit * 1 || 8
