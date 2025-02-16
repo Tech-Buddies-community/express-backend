@@ -38,13 +38,6 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/event', eventRouter);
 app.use('/api/v1/program', programRouter);
 app.use('/api/v1/job', jobRouter);
-app.use('/', (req, res) => {
-    res.json({ 
-        error: false,
-        status: 200,
-        message: "API works" 
-    });
-  });
 
 app.use(notFound);
 app.use(errorHandler);
