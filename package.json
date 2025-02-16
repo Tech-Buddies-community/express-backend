@@ -6,8 +6,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node app.js",
-    "start": "node app.js"
+    "dev": "node src/app.js",
+    "start": "node src/app.js"
   },
   "author": "",
   "license": "ISC",
