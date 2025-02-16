@@ -5,7 +5,7 @@ import { adminMiddleware, protectedMiddleware } from "../middleware/authMiddlewa
 const router = express.Router();
 
 // post /api/v1/auth/register
-router.post('/register', protectedMiddleware, adminMiddleware, registerUser)
+router.post('/register', registerUser)
 
 // post /api/v1/auth/login
 router.post('/login', loginUser)
