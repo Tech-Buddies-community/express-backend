@@ -26,7 +26,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(helmet())
 app.use(cors({
-    origin: 'https://dev.app.techbuddies.id',
+    origin: ['https://dev.app.techbuddies.id', 'https://dev.app.techbuddies.id:6700'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
