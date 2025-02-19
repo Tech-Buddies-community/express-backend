@@ -21,17 +21,24 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET // Click 'View API Keys' above to copy your API secret
 });
 
+const allowedOrigins = ["https://express-be.dev.app.techbuddies.id"];
+
 // Middleware
 app.use(express.json())
 app.use(cookieParser())
 app.use(helmet())
 app.use(cors({
-    origin: 'https://dev.app.techbuddies.id',
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: ['set-cookie']
-}));
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS tidak diizinkan untuk domain ini!"));
+      }
+    },
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true // Jika menggunakan cookies atau session
+  }));
 app.use(ExpressMongoSanitize())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('./public'))
