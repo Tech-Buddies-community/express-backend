@@ -7,6 +7,7 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import ExpressMongoSanitize from "express-mongo-sanitize";
 import { v2 as cloudinary } from 'cloudinary';
 import "./utils/cron.js"; // auto delete data event jika data lebih dari 3 hari
+import cors from 'cors';
 
 dotenv.config();
 
@@ -24,6 +25,13 @@ cloudinary.config({
 app.use(express.json())
 app.use(cookieParser())
 app.use(helmet())
+app.use(cors({
+    origin: 'https://dev.app.techbuddies.id',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['set-cookie']
+}));
 app.use(ExpressMongoSanitize())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('./public'))
