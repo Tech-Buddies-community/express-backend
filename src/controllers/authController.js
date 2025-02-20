@@ -14,12 +14,11 @@ const createSendResToken = (user, statusCode, res) => {
     const isDev = process.env.NODE_ENV === 'development' ? false : true
 
     const cookieOption = {
-        expire : new Date(
+        expires: new Date(
             Date.now() + 6 * 24 * 60 * 60 * 1000
         ),
         httpOnly: true,
-        secure: isDev,
-        sameSite: "None"
+        secure: isDev
     }
 
     res.cookie('jwt', token, cookieOption)
