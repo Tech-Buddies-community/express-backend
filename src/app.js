@@ -21,7 +21,10 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET // Click 'View API Keys' above to copy your API secret
 });
 
-const allowedOrigins = ["https://express-be.dev.app.techbuddies.id", "http://localhost:5173", "https://dev.app.techbuddies.id"];
+const allowedOrigins = process.env.NODE_ENV == "production" 
+  ? ["https://express-be.prod.app.techbuddies.id", "https://techbuddies.id"]
+  : ["https://express-be.dev.app.techbuddies.id", "http://localhost:5173", "https://dev.app.techbuddies.id"];
+
 
 // Middleware
 app.use(express.json())
