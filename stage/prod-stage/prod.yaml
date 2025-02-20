@@ -13,4 +13,4 @@ services:
         max-size: "300m" 
         max-file: "5"
     volumes:
-      - ./logs:/var/log/app
+      - ./prod_logs:/var/log/app
