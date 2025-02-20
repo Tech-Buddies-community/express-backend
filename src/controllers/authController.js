@@ -18,7 +18,8 @@ const createSendResToken = (user, statusCode, res) => {
             Date.now() + 6 * 24 * 60 * 60 * 1000
         ),
         httpOnly: true,
-        security: isDev
+        secure: isDev,
+        sameSite: "None"
     }
 
     res.cookie('jwt', token, cookieOption)
@@ -82,7 +83,8 @@ export const getCurrentUser = asyncHandler( async (req, res) => {
 export const logoutUser = asyncHandler ( async (req, res) => {
     res.cookie('jwt', "", {
         httpOnly: true,
-        expires: new Date(Date.now())
+        expires: new Date(Date.now()),
+        sameSite: "None"
     })
 
     res.status(200).json({
