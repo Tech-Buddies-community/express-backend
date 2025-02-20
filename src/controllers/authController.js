@@ -11,15 +11,13 @@ const signToken = id => {
 const createSendResToken = (user, statusCode, res) => {
     const token = signToken(user._id)
 
-    const isDev = process.env.NODE_ENV === 'development' ? false : true
-
     const cookieOption = {
         expires: new Date(
             Date.now() + 6 * 24 * 60 * 60 * 1000
         ),
         httpOnly: true,
-        secure: isDev,
-        sameSite: "None"
+        secure: process.env.NODE_ENV === 'development',
+        sameSite: process.env.NODE_ENV === 'development' ? "None" : "Lax"
     }
 
     res.cookie('jwt', token, cookieOption)
@@ -83,8 +81,9 @@ export const getCurrentUser = asyncHandler( async (req, res) => {
 export const logoutUser = asyncHandler ( async (req, res) => {
     res.cookie('jwt', "", {
         httpOnly: true,
-        expires: new Date(Date.now()),
-        sameSite: "None"
+        expires: new Date(0),
+        secure: process.env.NODE_ENV === 'development',
+        sameSite: process.env.NODE_ENV === 'development' ? "None" : "Lax"
     })
 
     res.status(200).json({
