@@ -34,4 +34,5 @@ jobs:
 
       - name: Deploy New Containers
         run: |
-          docker compose -f stage/dev-stage/dev.yaml up -d
+          echo "hello world"
+          # docker compose -f stage/dev-stage/dev.yaml up -d
