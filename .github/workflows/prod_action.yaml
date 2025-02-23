@@ -1,9 +1,9 @@
-name: Deploy Express.js to Development (Docker Compose)
+name: Deploy Express.js to Production (Docker Compose)
 
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   build:
@@ -15,11 +15,11 @@ jobs:
       - name: Create .env file
         run: |
             touch .env
-            echo "${{secrets.DEV_ENV}}" >> .env
+            echo "${{secrets.PROD_ENV}}" >> .env
 
       - name: Build Docker Image
         run: |
-          docker build -t express-be:dev-latest -f stage/dev-stage/Dockerfile .
+          docker build -t express-be:latest -f stage/dev-stage/Dockerfile .
 
   deploy:
     runs-on: self-hosted
@@ -30,8 +30,8 @@ jobs:
 
       - name: Stop & Remove Existing Containers
         run: |
-          docker compose -f stage/dev-stage/dev.yaml down || true
+          docker compose -f stage/prod-stage/dev.yaml down || true
 
       - name: Deploy New Containers
         run: |
-          docker compose -f stage/dev-stage/dev.yaml up -d
+          docker compose -f stage/prod-stage/dev.yaml up -d

@@ -1,16 +1,16 @@
 version: '3'
 
 services:
-  buddies-express-be-dev:
-    container_name: buddies-express-be-dev
-    image: express-be:dev-latest
+  buddies-express-be:
+    container_name: buddies-express-be
+    image: express-be:latest
     restart: always
     ports:
-      - 6100:3000
+      - 7100:3000
     logging:
       driver: "json-file"
       options:
         max-size: "300m" 
         max-file: "5"
     volumes:
-      - ./dev_logs:/var/log/app
+      - ./prod_logs:/var/log/app
