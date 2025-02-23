@@ -1,0 +1,37 @@
+name: Deploy Express.js to Development (Docker Compose)
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+            touch .env
+            echo "${{secrets.DEV_ENV}}" >> .env
+
+      - name: Build Docker Image
+        run: |
+          docker build -t express-be:dev-latest -f stage/dev-stage/Dockerfile .
+
+  deploy:
+    runs-on: self-hosted
+    needs: build 
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Stop & Remove Existing Containers
+        run: |
+          docker compose -f stage/dev-stage/dev.yaml down || true
+
+      - name: Deploy New Containers
+        run: |
+          docker compose -f stage/dev-stage/dev.yaml up -d

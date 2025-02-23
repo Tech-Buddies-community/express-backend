@@ -6,7 +6,8 @@ import helmet from 'helmet';
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import ExpressMongoSanitize from "express-mongo-sanitize";
 import { v2 as cloudinary } from 'cloudinary';
-import "./utils/cron.js"; // auto delete data event jika data lebih dari 3 hari
+// import "./utils/cron.js"; // auto delete data event jika data lebih dari 3 hari
+import cors from 'cors';
 
 dotenv.config();
 
@@ -20,10 +21,27 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET // Click 'View API Keys' above to copy your API secret
 });
 
+const allowedOrigins = process.env.NODE_ENV == "production" 
+  ? ["https://express-be.prod.app.techbuddies.id", "https://techbuddies.id"]
+  : ["https://express-be.dev.app.techbuddies.id", "http://localhost:5173", "https://dev.app.techbuddies.id"];
+
+
 // Middleware
 app.use(express.json())
 app.use(cookieParser())
 app.use(helmet())
+app.use(cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS tidak diizinkan untuk domain ini!"));
+      }
+    },
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true // Jika menggunakan cookies atau session
+  }));
 app.use(ExpressMongoSanitize())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('./public'))
