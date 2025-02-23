@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import ExpressMongoSanitize from "express-mongo-sanitize";
 import { v2 as cloudinary } from 'cloudinary';
-import "./utils/cron.js"; // auto delete data event jika data lebih dari 3 hari
+// import "./utils/cron.js"; // auto delete data event jika data lebih dari 3 hari
 import cors from 'cors';
 
 dotenv.config();
