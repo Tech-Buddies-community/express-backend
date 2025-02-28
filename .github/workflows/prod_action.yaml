@@ -30,8 +30,8 @@ jobs:
 
       - name: Stop & Remove Existing Containers
         run: |
-          docker compose -f stage/prod-stage/dev.yaml down || true
+          docker compose -f stage/prod-stage/prod.yaml down || true
 
       - name: Deploy New Containers
         run: |
-          docker compose -f stage/prod-stage/dev.yaml up -d
+          docker compose -f stage/prod-stage/prod.yaml up -d
