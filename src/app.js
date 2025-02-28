@@ -69,5 +69,5 @@ app.listen(port, () => {
 mongoose.connect(process.env.DATABASE, {}).then(() => {
     console.log('Database Connect')
 }).catch((err) => {
-    console.log('Connection failed!')
+    console.log(`Connection failed! ::: ${err}`)
 })
