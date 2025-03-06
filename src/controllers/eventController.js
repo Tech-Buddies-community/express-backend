@@ -113,6 +113,24 @@ export const updateEvent = asyncHandler( async(req, res) => {
 export const deleteEvent = asyncHandler( async(req, res) => {
     try {
         const paramsId = req.params.id;
+
+        // Cari event dulu untuk dapatkan `public_id`
+        const event = await Event.findById(paramsId);
+        if (!event) {
+            return res.status(404).json({ message: 'Event not found!' });
+        }
+
+        // Hapus gambar di Cloudinary jika ada
+        if (event.image_url) {
+            const publicId = event.image_url
+                .split('/')
+                .slice(-2) 
+                .join('/')
+                .split('.')[0];
+
+            await cloudinary.uploader.destroy(publicId);
+        }
+
         await Event.findByIdAndDelete(paramsId);
 
         return res.status(200).json({
