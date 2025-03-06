@@ -128,7 +128,10 @@ export const deleteEvent = asyncHandler( async(req, res) => {
                 .join('/')
                 .split('.')[0];
 
+            console.log("Public ID yang akan dihapus:", publicId);
+
             await cloudinary.uploader.destroy(publicId);
+            console.log("Hasil hapus Cloudinary:", result);
         }
 
         await Event.findByIdAndDelete(paramsId);
