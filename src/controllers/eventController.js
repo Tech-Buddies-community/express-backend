@@ -26,17 +26,28 @@ export const getEventAll = asyncHandler( async(req, res) => {
     const excludeField = ['page', 'limit', 'name'];
     excludeField.forEach((element) => delete queryOjb[element]);
 
-    let query;
+    let queryCondition = [];
 
     if (req.query.name) {
-        query = Event.find({
+        queryCondition.push({
             name: {$regex: req.query.name, $options: 'i'}
         })
-    } else {
-        query = Event.find(queryOjb)
     }
 
-    query = query.sort({ date: 1 });
+    const currentDate = new Date()
+
+    queryCondition.push({
+        $or: [
+            { end: { $exists: true, $gt: currentDate } }, // Event yang end date nya masih
+            { start: { $exists: true, $gt: currentDate } }, // Event yang start nya masih
+            { $and: [{ start: { $exists: false } }, { end: { $exists: false } }] } // Event gak ada start & end date
+        ]
+    });
+
+
+    let query = Event.find({ $and: queryCondition})
+
+    query = query.sort({ date: 1 , time: 1});
 
     // Pagination
     const page = req.query.page * 1 || 1
@@ -45,7 +56,7 @@ export const getEventAll = asyncHandler( async(req, res) => {
 
     query = query.skip(skipData).limit(limitData);
 
-    let countEvent = await Event.countDocuments(queryOjb)
+    let countEvent = await Event.countDocuments({$and: queryCondition})
     if (req.query.page) {
         if (skipData >= countEvent) {
             res.status(404)
