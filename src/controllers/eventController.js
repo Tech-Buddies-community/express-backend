@@ -25,33 +25,17 @@ export const getEventAll = asyncHandler( async(req, res) => {
     const excludeField = ['page', 'limit', 'name'];
     excludeField.forEach((element) => delete queryOjb[element]);
 
-    let queryCondition = [];
+    let query;
 
     if (req.query.name) {
-        queryCondition.push({
+        query = Event.find({
             name: {$regex: req.query.name, $options: 'i'}
         })
-    }
+    } else {
+    query = Event.find(queryOjb)
+}
 
-    const currentDate = new Date()
-
-    queryCondition.push({
-        $and: [
-            {
-                $or: [
-                    { end: { $exists: true, $gt: currentDate } },
-                    { start: { $exists: true, $gt: currentDate } },
-                    { $and: [{ start: { $exists: false } }, { end: { $exists: false } }] }
-                ]
-            },
-            { status: { $ne: "hide" } }
-        ]
-    });
-
-    console.log("ini query condition: ", queryCondition);
-    let query = Event.find({ $and: queryCondition})
-    console.log("ini query condition setelah: ", queryCondition);
-    query = query.sort({ date: 1 , time: 1});
+    query = query.sort({ date: 1 });
 
     // Pagination
     const page = req.query.page * 1 || 1
@@ -60,7 +44,7 @@ export const getEventAll = asyncHandler( async(req, res) => {
 
     query = query.skip(skipData).limit(limitData);
 
-    let countEvent = await Event.countDocuments({$and: queryCondition})
+    let countEvent = await Event.countDocuments(queryOjb)
     if (req.query.page) {
         if (skipData >= countEvent) {
             res.status(404)
