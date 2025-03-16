@@ -36,10 +36,15 @@ export const getEventAll = asyncHandler( async(req, res) => {
     const currentDate = new Date()
 
     queryCondition.push({
-        $or: [
-            { end: { $exists: true, $gt: currentDate } }, // Event yang end date nya masih
-            { start: { $exists: true, $gt: currentDate } }, // Event yang start nya masih
-            { $and: [{ start: { $exists: true } }, { end: { $exists: false } }] }
+        $and: [
+            {
+                $or: [
+                    { end: { $exists: true, $gt: currentDate } },
+                    { start: { $exists: true, $gt: currentDate } },
+                    { $and: [{ start: { $exists: false } }, { end: { $exists: false } }] }
+                ]
+            },
+            { status: { $ne: "hide" } }
         ]
     });
 
