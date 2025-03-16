@@ -39,7 +39,7 @@ export const getEventAll = asyncHandler( async(req, res) => {
         $or: [
             { end: { $exists: true, $gt: currentDate } }, // Event yang end date nya masih
             { start: { $exists: true, $gt: currentDate } }, // Event yang start nya masih
-            { $and: [{ start: { $exists: false } }, { end: { $exists: false } }] } // Event gak ada start & end date
+            { $and: [{ start: { $exists: true } }, { end: { $exists: false } }] }
         ]
     });
 
