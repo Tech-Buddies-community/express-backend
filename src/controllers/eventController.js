@@ -22,7 +22,6 @@ export const createEvent = asyncHandler( async(req, res) => {
 export const getEventAll = asyncHandler( async(req, res) => {
     const queryOjb = { ...req.query };
 
-    // function for mengabaikan jika ada req page dan limit
     const excludeField = ['page', 'limit', 'name'];
     excludeField.forEach((element) => delete queryOjb[element]);
 
@@ -44,9 +43,9 @@ export const getEventAll = asyncHandler( async(req, res) => {
         ]
     });
 
-
+    console.log("ini query condition: ", queryCondition);
     let query = Event.find({ $and: queryCondition})
-
+    console.log("ini query condition setelah: ", queryCondition);
     query = query.sort({ date: 1 , time: 1});
 
     // Pagination
