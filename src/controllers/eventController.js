@@ -38,15 +38,9 @@ export const getEventAll = asyncHandler( async(req, res) => {
 
     queryCondition.push({
         $or: [
-            { end: { $exists: true, $gt: currentDate } },
-            { start: { $exists: true, $gt: currentDate } },
-            {
-                $and: [
-                    { start: { $exists: true, $lte: currentDate } },
-                    { $or: [{ end: { $exists: false } }, { end: { $gte: currentDate } }] }
-                ]
-            },
-            { $and: [{ start: { $exists: false } }, { end: { $exists: false } }] }
+            { end: { $exists: true, $gt: currentDate } }, // Event yang end date nya masih
+            { start: { $exists: true, $gt: currentDate } }, // Event yang start nya masih
+            { $and: [{ start: { $exists: false } }, { end: { $exists: false } }] } // Event gak ada start & end date
         ]
     });
 
@@ -109,7 +103,7 @@ export const getEventId = asyncHandler( async(req, res) => {
 export const updateEvent = asyncHandler( async(req, res) => {
     try {
         const paramsId = req.params.id
-        const updateEventId = await Event.findByIdAndUpdate(paramsId, 
+        const updateEventId = await Event.findByIdAndUpdate(paramsId,
             req.body, {
                 runValidators: false,
                 new: true
@@ -141,7 +135,7 @@ export const deleteEvent = asyncHandler( async(req, res) => {
         if (event.image_url) {
             const publicId = event.image_url
                 .split('/')
-                .slice(-2) 
+                .slice(-2)
                 .join('/')
                 .split('.')[0];
 
@@ -166,17 +160,17 @@ export const deleteEvent = asyncHandler( async(req, res) => {
 
 export const fileUpload = asyncHandler( async(req, res) => {
     const stream = cloudinary.uploader.upload_stream({
-        folder: 'techbuddies/event',
-        allowed_formats: ['jpg', 'jpeg', 'png']
-    }, 
-    function(err, result){
-        if (err) {
-            console.log(err)
-            return res.status(500).json({ message: 'Failed upload image!', error: err })
-        }
+            folder: 'techbuddies/event',
+            allowed_formats: ['jpg', 'jpeg', 'png']
+        },
+        function(err, result){
+            if (err) {
+                console.log(err)
+                return res.status(500).json({ message: 'Failed upload image!', error: err })
+            }
 
-        res.json({ message: 'Success upload image!', url: result.secure_url })
-    })
+            res.json({ message: 'Success upload image!', url: result.secure_url })
+        })
 
     streamifier.createReadStream(req.file.buffer).pipe(stream)
 })
