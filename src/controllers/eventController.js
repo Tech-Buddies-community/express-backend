@@ -19,41 +19,49 @@ export const createEvent = asyncHandler( async(req, res) => {
     }
 });
 
-export const getEventAll = asyncHandler( async(req, res) => {
+export const getEventAll = asyncHandler(async (req, res) => {
     const queryOjb = { ...req.query };
 
     const excludeField = ['page', 'limit', 'name'];
     excludeField.forEach((element) => delete queryOjb[element]);
 
-    let query;
+    const today = new Date().toISOString().split("T")[0];
+
+    let query = Event.find({
+        ...queryOjb,
+        date: { $gte: today }
+    });
 
     if (req.query.name) {
-        query = Event.find({
-            name: {$regex: req.query.name, $options: 'i'}
-        })
-    } else {
-    query = Event.find(queryOjb)
-}
+        query = query.find({
+            name: { $regex: req.query.name, $options: 'i' }
+        });
+    }
 
+    // Sorting asc
     query = query.sort({ date: 1 });
 
     // Pagination
-    const page = req.query.page * 1 || 1
-    const limitData = req.query.limit * 1 || 8
-    const skipData = (page -1 ) * limitData
+    const page = parseInt(req.query.page) || 1;
+    const limitData = parseInt(req.query.limit) || 8;
+    const skipData = (page - 1) * limitData;
 
     query = query.skip(skipData).limit(limitData);
 
-    let countEvent = await Event.countDocuments(queryOjb)
-    if (req.query.page) {
-        if (skipData >= countEvent) {
-            res.status(404)
-            throw new Error('This page doest exist')
-        }
-    }
+    let data = await query;
 
-    const data = await query
-    const totalPage = Math.ceil(countEvent / limitData)
+    // convert date
+    data = data.map(event => ({
+        ...event._doc,
+        parsedDate: new Date(event.date),
+        parsedDateEnd: event.dateend ? new Date(event.dateend) : null
+    }));
+
+    const totalEvent = await Event.countDocuments({
+        ...queryOjb,
+        date: { $gte: today }
+    });
+    const totalPage = Math.ceil(totalEvent / limitData);
 
     return res.status(200).json({
         message: 'Success get all event!',
@@ -61,9 +69,9 @@ export const getEventAll = asyncHandler( async(req, res) => {
         pagination: {
             totalPage,
             page,
-            totalEvent: countEvent
+            totalEvent
         }
-    })
+    });
 });
 
 export const getEventId = asyncHandler( async(req, res) => {
