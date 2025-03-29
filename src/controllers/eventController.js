@@ -29,7 +29,10 @@ export const getEventAll = asyncHandler(async (req, res) => {
 
     let query = Event.find({
         ...queryOjb,
-        date: { $gte: today }
+        $or: [
+            { date: { $gte: today }},
+            { dateend: {$gte: today}}
+        ]
     });
 
     if (req.query.name) {
@@ -59,7 +62,10 @@ export const getEventAll = asyncHandler(async (req, res) => {
 
     const totalEvent = await Event.countDocuments({
         ...queryOjb,
-        date: { $gte: today }
+        $or: [
+            { date: { $gte: today }},
+            { dateend: {$gte: today}}
+        ]
     });
     const totalPage = Math.ceil(totalEvent / limitData);
 
