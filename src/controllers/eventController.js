@@ -2,6 +2,12 @@ import Event from "../models/eventModel.js";
 import asyncHandler from "../middleware/asyncMiddleware.js";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
+import timezone from "dayjs/plugin/timezone.js";
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 export const createEvent = asyncHandler( async(req, res) => {
     try {
@@ -56,8 +62,8 @@ export const getEventAll = asyncHandler(async (req, res) => {
     // convert date
     data = data.map(event => ({
         ...event._doc,
-        parsedDate: new Date(event.date),
-        parsedDateEnd: event.dateend ? new Date(event.dateend) : null
+        parsedDate: dayjs(event.date).tz('Asia/Jakarta').format('YYYY-MM-DD'),
+        parsedDateEnd: event.dateend ? dayjs(event.date).tz('Asia/Jakarta').format('YYYY-MM-DD') : null
     }));
 
     const totalEvent = await Event.countDocuments({
