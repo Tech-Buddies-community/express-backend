@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: iqbal
+    runs-on: iqbal-vm
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
           docker build -t express-be:dev-latest -f stage/dev-stage/Dockerfile .
 
   deploy:
-    runs-on: iqbal
+    runs-on: iqbal-vm
     needs: build 
     steps:
       - name: Checkout Repository
